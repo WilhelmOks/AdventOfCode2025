@@ -29,22 +29,20 @@ private func actions(from input: String) -> [Action] {
 }
 
 struct Day01: View {
-    @State var result1 = ""
-    @State var result2 = ""
-    
     var body: some View {
         content()
-            .onAppear {
-                calculate1()
-                calculate2()
-            }
     }
     
     @ViewBuilder private func content() -> some View {
-        ResultView(day: 1, result1: result1, result2: result2)
+        ResultView(
+            day: 1,
+            calc1: calculate1,
+            calc2: calculate2,
+        )
+        .padding()
     }
     
-    func calculate1() {
+    func calculate1() async -> String {
         let input = readInput(day: "01")
         let actions = actions(from: input)
         var number = 50
@@ -68,11 +66,10 @@ struct Day01: View {
             }
         }
         
-        result1 = String(numberOfZeroes)
-        print("P1: " + result1)
+        return String(numberOfZeroes)
     }
     
-    func calculate2() {
+    func calculate2() async -> String {
         let input = readInput(day: "01")
         let actions = actions(from: input)
         var number = 50
@@ -103,8 +100,7 @@ struct Day01: View {
             }
         }
         
-        result2 = String(numberOfZeroes)
-        print("P2: " + result2)
+        return String(numberOfZeroes)
     }
 }
 
