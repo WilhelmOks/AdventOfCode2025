@@ -41,13 +41,7 @@ struct Day01: View {
     }
     
     @ViewBuilder private func content() -> some View {
-        VStack(spacing: 20) {
-            Text("Day 1")
-                .font(.title)
-            
-            Text("Result part 1: \(result1)")
-            Text("Result part 2: \(result2)")
-        }
+        ResultView(day: 1, result1: result1, result2: result2)
     }
     
     func calculate1() {
