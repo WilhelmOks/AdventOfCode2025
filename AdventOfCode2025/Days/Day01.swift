@@ -29,11 +29,15 @@ private func actions(from input: String) -> [Action] {
 }
 
 struct Day01: View {
-    @State var result = ""
+    @State var result1 = ""
+    @State var result2 = ""
     
     var body: some View {
         content()
-            .onAppear(perform: calculate)
+            .onAppear {
+                calculate1()
+                calculate2()
+            }
     }
     
     @ViewBuilder private func content() -> some View {
@@ -41,13 +45,12 @@ struct Day01: View {
             Text("Day 1")
                 .font(.title)
             
-            HStack {
-                Text("Result: \(result)")
-            }
+            Text("Result part 1: \(result1)")
+            Text("Result part 2: \(result2)")
         }
     }
     
-    func calculate() {
+    func calculate1() {
         let input = readInput(day: "01")
         let actions = actions(from: input)
         var number = 50
@@ -71,8 +74,43 @@ struct Day01: View {
             }
         }
         
-        result = String(numberOfZeroes)
-        print(result)
+        result1 = String(numberOfZeroes)
+        print("P1: " + result1)
+    }
+    
+    func calculate2() {
+        let input = readInput(day: "01")
+        let actions = actions(from: input)
+        var number = 50
+        var numberOfZeroes = 0
+        
+        for action in actions {
+            switch action.direction {
+            case .left:
+                for _ in 1...action.number {
+                    number -= 1
+                    if number < 0 {
+                        number = 99
+                    }
+                    if number == 0 {
+                        numberOfZeroes += 1
+                    }
+                }
+            case .right:
+                for _ in 1...action.number {
+                    number += 1
+                    if number > 99 {
+                        number = 0
+                    }
+                    if number == 0 {
+                        numberOfZeroes += 1
+                    }
+                }
+            }
+        }
+        
+        result2 = String(numberOfZeroes)
+        print("P2: " + result2)
     }
 }
 
