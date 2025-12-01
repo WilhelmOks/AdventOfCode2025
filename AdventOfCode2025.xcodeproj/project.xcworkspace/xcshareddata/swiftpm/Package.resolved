@@ -1,0 +1,15 @@
+{
+  "originHash" : "e0b70effb99f27ee5d2498f0fe870ffe20e367b8acbe043fbc27b393561b603c",
+  "pins" : [
+    {
+      "identity" : "vector2",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WilhelmOks/Vector2",
+      "state" : {
+        "revision" : "2f67ee83548b8a4b0fe387c614fd26436513c463",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
