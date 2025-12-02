@@ -45,21 +45,9 @@ private func factors(of n: Int) -> [Int] {
     return factors
 }
 
-private func splitEvenly(_ id: String, into parts: Int) -> [String] {
-    if id.count.isMultiple(of: parts) {
-        return (0..<parts).map { i in
-            let partLength = id.count / parts
-            let from = id.index(id.startIndex, offsetBy: i * partLength)
-            let to = id.index(id.startIndex, offsetBy: partLength + i * partLength)
-            return String(id[from..<to])
-        }
-    } else {
-        return []
-    }
-}
-
-private func allEqual(parts: [String]) -> Bool {
-    Set(parts).count == 1
+private func splittingHasDuplicates(_ id: String, into parts: Int) -> Bool {
+    let first = String(id.prefix(id.count / parts))
+    return String(repeating: first, count: parts) == id
 }
 
 struct Day02: View {
@@ -122,12 +110,9 @@ struct Day02: View {
                 let factors = factors(of: id.count).dropFirst()
                 
                 for factor in factors {
-                    let parts = splitEvenly(id, into: Int(factor))
-                    if parts.count >= 2 {
-                        if allEqual(parts: parts) {
-                            invalidIds.append(intId)
-                            break
-                        }
+                    if splittingHasDuplicates(id, into: Int(factor)) {
+                        invalidIds.append(intId)
+                        break
                     }
                 }
             }
