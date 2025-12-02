@@ -1,10 +1,3 @@
-//
-//  Day01.swift
-//  AdventOfCode2025
-//
-//  Created by Wilhelm Oks on 01.12.25.
-//
-
 import SwiftUI
 
 private struct Action {
