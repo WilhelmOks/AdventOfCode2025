@@ -4,13 +4,10 @@ private func parse(_ input: String) -> [[Int]] {
     input.split(separator: "\n").map { line in line.map { Int(String($0))! }}
 }
 
-private func indexOfLargest(_ bank: [Int], searchCut: Int) -> Int {
+private func indexOfLargest(_ bank: [Int]) -> Int {
     var largest = 0
     var indexOfLargest = -1
     for (index, num) in bank.enumerated() {
-        if searchCut > 0 && index == bank.count - searchCut {
-            break
-        }
         if num > largest {
             largest = num
             indexOfLargest = index
@@ -61,9 +58,9 @@ struct Day03: View {
         var sum = 0
         
         for bank in banks {
-            let indexOfFirst = indexOfLargest(bank, searchCut: 1)
+            let indexOfFirst = indexOfLargest(bank.dropLast(1))
             let restOfBank = Array(bank.dropFirst(indexOfFirst + 1))
-            let indexOfSecond = indexOfLargest(restOfBank, searchCut: 0)
+            let indexOfSecond = indexOfLargest(restOfBank)
             let joltage = bank[indexOfFirst] * 10 + restOfBank[indexOfSecond]
             //print("\(bank.printedBank) -> \(restOfBank.printedBank) | \(indexOfFirst), \(indexOfSecond), \(joltage)")
             sum += joltage
@@ -81,15 +78,16 @@ struct Day03: View {
         for bank in banks {
             var batteries = 12
             var restOfBank = bank
-            var joltageNumbers: [Int64] = []
+            var joltageDigits: [Int64] = []
             while batteries > 0 {
-                let index = indexOfLargest(restOfBank, searchCut: batteries - 1)
-                joltageNumbers.append(Int64(restOfBank[index]))
+                let index = indexOfLargest(restOfBank.dropLast(batteries - 1))
+                let joltageDigit = Int64(restOfBank[index])
+                joltageDigits.append(joltageDigit)
                 //print("\(restOfBank.printedBank) -> | \(index)")
                 restOfBank = Array(restOfBank.dropFirst(index + 1))
                 batteries -= 1
             }
-            let joltage = joltageNumbers.positionalSum
+            let joltage = joltageDigits.positionalSum
             //print("joltage: \(joltage)")
             
             sum += joltage
