@@ -4,29 +4,11 @@ private func parse(_ input: String) -> [[Int]] {
     input.split(separator: "\n").map { line in line.map { Int(String($0))! }}
 }
 
-private func indexOfLargest(_ array: [Int], firstSearch: Bool) -> Int {
+private func indexOfLargest(_ bank: [Int], searchCut: Int) -> Int {
     var largest = 0
     var indexOfLargest = -1
-    for (index, num) in array.enumerated() {
-        if firstSearch && index == array.count - 1 {
-            break
-        }
-        if num > largest {
-            largest = num
-            indexOfLargest = index
-        }
-        if num == 9 {
-            return index
-        }
-    }
-    return indexOfLargest
-}
-
-private func indexOfLargest(_ array: [Int], searchCut: Int) -> Int {
-    var largest = 0
-    var indexOfLargest = -1
-    for (index, num) in array.enumerated() {
-        if searchCut > 0 && index == array.count - searchCut {
+    for (index, num) in bank.enumerated() {
+        if searchCut > 0 && index == bank.count - searchCut {
             break
         }
         if num > largest {
@@ -79,9 +61,9 @@ struct Day03: View {
         var sum = 0
         
         for bank in banks {
-            let indexOfFirst = indexOfLargest(bank, firstSearch: true)
+            let indexOfFirst = indexOfLargest(bank, searchCut: 1)
             let restOfBank = Array(bank.dropFirst(indexOfFirst + 1))
-            let indexOfSecond = indexOfLargest(restOfBank, firstSearch: false)
+            let indexOfSecond = indexOfLargest(restOfBank, searchCut: 0)
             let joltage = bank[indexOfFirst] * 10 + restOfBank[indexOfSecond]
             //print("\(bank.printedBank) -> \(restOfBank.printedBank) | \(indexOfFirst), \(indexOfSecond), \(joltage)")
             sum += joltage
