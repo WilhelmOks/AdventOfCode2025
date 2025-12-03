@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Day02()
+            Day03()
         }
         .padding()
     }

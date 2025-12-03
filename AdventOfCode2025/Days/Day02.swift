@@ -1,7 +1,7 @@
 import SwiftUI
 
 private func parse(from input: String) -> [ClosedRange<Int>] {
-    let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
+    let text = input
     
     return text.split(separator: ",").compactMap { part in
         let pair = part.split(separator: "-")

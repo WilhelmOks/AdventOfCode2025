@@ -54,6 +54,8 @@ struct ResultView: View {
         }
         .padding()
         .glassEffect()
+        .animation(.spring, value: result1)
+        .animation(.spring, value: result2)
     }
 }
 
