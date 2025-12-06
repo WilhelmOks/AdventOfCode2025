@@ -10,10 +10,11 @@ import SwiftUI
 struct PlayGrid<Cell: View>: View {
     let rows: Int
     let columns: Int
+    var spacing: CGFloat = 3
     @ViewBuilder let cell: (Int, Int) -> Cell
     
     var body: some View {
-        Grid(horizontalSpacing: 3, verticalSpacing: 3) {
+        Grid(horizontalSpacing: spacing, verticalSpacing: spacing) {
             ForEach(0..<rows, id: \.self) { row in
                 GridRow {
                     ForEach(0..<columns, id: \.self) { column in
