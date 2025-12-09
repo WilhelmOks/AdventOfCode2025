@@ -185,7 +185,42 @@ struct Day08: View {
     func calculate2() async -> String {
         let input = readInput(day: "08")
         
-        return String("??")
+        let positoins = parseInput(input)
+        
+        var circuits: [[Position]] = positoins.map { [$0] }
+        
+        var distances: Set<Distance> = []
+        iteratePositions(circuits: circuits) { pos in
+            iteratePositions(circuits: circuits) { otherPos in
+                if pos != otherPos {
+                    let distance = Distance(pos1: pos, pos2: otherPos)
+                    if !distances.contains(distance) {
+                        distances.insert(distance)
+                    }
+                }
+            }
+        }
+        
+        let sortedDistances = distances.sorted { $0.dist < $1.dist }
+        
+        var wallDistance = 0
+        
+        for distance in sortedDistances {
+            let pos1 = circuits.find(pos: distance.pos1.pos)
+            let pos2 = circuits.find(pos: distance.pos2.pos)
+            
+            if pos1.circuitIndex != pos2.circuitIndex {
+                circuits[pos1.circuitIndex] += circuits[pos2.circuitIndex]
+                circuits.remove(at: pos2.circuitIndex)
+            }
+            
+            if circuits.count == 1 {
+                wallDistance = pos1.pos.x * pos2.pos.x
+                break
+            }
+        }
+        
+        return String(wallDistance)
     }
 }
 
