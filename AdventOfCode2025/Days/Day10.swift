@@ -2,6 +2,11 @@ import SwiftUI
 import Foundation
 
 private struct Machine: CustomStringConvertible {
+    struct ButtonPresses {
+        let buttonIndex: Int
+        let presses: Int
+    }
+    
     let lightsTarget: [Bool]
     var lights: [Bool]
     let buttons: [[Int]]
@@ -14,12 +19,12 @@ private struct Machine: CustomStringConvertible {
         self.joltageRequirements = joltageRequirements
     }
     
-    func findSolution() -> [Int] {
+    func findLightsSolution() -> [Int] {
         let candidates = combinations(buttons.count)
         for candidate in candidates {
             var copy = self
             //print("TRYING: \(candidate)")
-            copy.apply(solution: candidate)
+            copy.applyLightsSolution(candidate)
             if copy.lights == copy.lightsTarget {
                 return candidate
             }
@@ -27,13 +32,17 @@ private struct Machine: CustomStringConvertible {
         return []
     }
     
-    mutating func apply(solution: [Int]) {
-        for buttonIndex in solution {
+    mutating func applyLightsSolution(_ lightsSolution: [Int]) {
+        for buttonIndex in lightsSolution {
             let lightIndices = buttons[buttonIndex]
             for lightIndex in lightIndices {
                 lights[lightIndex].toggle()
             }
         }
+    }
+    
+    func findJoltageSolution() -> [ButtonPresses] {
+        return [.init(buttonIndex: 0, presses: 0)]
     }
     
     var description: String {
@@ -104,6 +113,12 @@ private func combinations(_ n: Int) -> AnySequence<[Int]> {
     }
 }
 
+extension [Machine.ButtonPresses] {
+    func totalNumberOfPresses() -> Int {
+        reduce(into: 0) { $0 += $1.presses }
+    }
+}
+
 struct Day10: View {
     var body: some View {
         content()
@@ -134,12 +149,12 @@ struct Day10: View {
         //print(machines.map { "\($0)" }.joined(separator: "\n"))
         
         let solvedMachines = machines.map { machine in
-            let solution = machine.findSolution()
+            let solution = machine.findLightsSolution()
             guard !solution.isEmpty else {
                 fatalError("ERROR: No solution found")
             }
             var solvedMachine = machine
-            solvedMachine.apply(solution: solution)
+            solvedMachine.applyLightsSolution(solution)
             //print("SOLVED: \(solvedMachine)")
             return (solvedMachine, solution)
         }
@@ -154,9 +169,29 @@ struct Day10: View {
     }
     
     func calculate2() async -> String {
-        let input = readInput(day: "10")
+        //let input = readInput(day: "10")
         
-        return String("??")
+        let input = """
+            [.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+            [...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
+            [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}
+            """
+        
+        let machines = parseInput(input)
+        
+        //print(machines.map { "\($0)" }.joined(separator: "\n"))
+        
+        let solutions = machines.map { machine in
+            machine.findJoltageSolution()
+        }
+        
+        let pressesPerMachine = solutions.map { $0.totalNumberOfPresses() }
+        
+        let totalNumberOfPresses = pressesPerMachine.reduce(0, +)
+        
+        // part 2 is incomplete. I can't figure it out.
+                
+        return String(totalNumberOfPresses)
     }
 }
 
