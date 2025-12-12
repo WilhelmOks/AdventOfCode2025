@@ -12,7 +12,7 @@ private func parseInput(_ input: String) -> Matrix<Part> {
     let columns = lines.first!.count
     let rows = lines.count
     
-    var matrix: Matrix<Part> = .init(rows: rows, columns: columns, initial: .empty)
+    var matrix: Matrix<Part> = .init(columns: columns, rows: rows, initial: .empty)
     
     for (y, line) in lines.enumerated() {
         for (x, char) in line.enumerated() {

@@ -1,11 +1,11 @@
 import Vector2
 
 struct Matrix<T> {
-    let rows: Int
     let columns: Int
+    let rows: Int
     var data: [T]
     
-    init(rows: Int, columns: Int, initial: T) {
+    init(columns: Int, rows: Int, initial: T) {
         self.rows = rows
         self.columns = columns
         self.data = [T](repeating: initial, count: rows * columns)
@@ -37,8 +37,8 @@ struct DefaultingMatrix<T> {
     var grid: Matrix<T>
     let defaultValue: T
     
-    init(rows: Int, columns: Int, initial: T, default: T) {
-        grid = Matrix(rows: rows, columns: columns, initial: initial)
+    init(columns: Int, rows: Int, initial: T, default: T) {
+        grid = Matrix(columns: columns, rows: rows, initial: initial)
         defaultValue = `default`
     }
     

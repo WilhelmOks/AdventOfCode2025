@@ -6,7 +6,7 @@ private func parseInput(_ input: String) -> Matrix<Bool> {
     let columns = lines.first?.count ?? 0
     let rows = lines.count
     
-    var grid: Matrix<Bool> = .init(rows: rows, columns: columns, initial: false)
+    var grid: Matrix<Bool> = .init(columns: columns, rows: rows, initial: false)
     
     for (y, line) in lines.enumerated() {
         for (x, char) in line.enumerated() {
